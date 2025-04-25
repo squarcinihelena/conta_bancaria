@@ -75,5 +75,13 @@ public class Cores {
 	
 	
 	// custom
-	public static final String TEXT_AURORA = "\033[38;5;51m";  // Azul esverdeado, como as auroras
+	public static final String TEXT_AURORA = "\033[38;5;51m";  // Azul esverdeado
+	public static final String ANSI_BLUE_PETROLEUM_BACKGROUND = "\u001B[48;5;24m";
+
+
+	
+
+
+	
+	
 }
