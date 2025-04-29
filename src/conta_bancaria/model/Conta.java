@@ -19,6 +19,8 @@ public class Conta {
 			this.titular = titular;
 			this.saldo = saldo;
 		}
+		
+		public Conta() {};
 	
 		// Getters and Setters
 		public int getNumero() {
