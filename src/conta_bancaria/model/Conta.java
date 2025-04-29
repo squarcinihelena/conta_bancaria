@@ -2,7 +2,7 @@ package conta_bancaria.model;
 
 import java.text.NumberFormat;
 
-public class Conta {
+public abstract class Conta {
 	
 		// Atributos da Classe
 		private int numero;

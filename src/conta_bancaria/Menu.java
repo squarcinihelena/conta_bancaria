@@ -2,7 +2,6 @@ package conta_bancaria;
 
 import java.util.Scanner;
 
-import conta_bancaria.model.Conta;
 import conta_bancaria.model.ContaCorrente;
 import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
@@ -14,22 +13,6 @@ public class Menu {
 			Scanner sc = new Scanner(System.in);
 	
 			int opcao;
-			
-			//criar um objeto da classe conta
-			Conta c1 = new Conta(18001, 001, 1, "Aylla", 500000);
-			c1.visualizar();
-			c1.sacar(600);
-			c1.visualizar();
-			c1.sacar(90000000);
-			
-			//sacar
-			c1.depositar(1900);
-			c1.visualizar();
-			
-			
-			//despositar
-			c1.setTitular("Aylla Scaglia");
-			c1.visualizar();
 			
 			//criando objeto da classe conta corrente
 			ContaCorrente cc1 = new ContaCorrente(2, 456, 1, "Renata Negrini", 600000, 600000);
