@@ -1,121 +1,182 @@
 package conta_bancaria;
 
+import java.io.IOException;
 import java.util.Scanner;
 
+import conta_bancaria.controller.ContaController;
 import conta_bancaria.model.ContaCorrente;
 import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
 
 public class Menu {
 
-		public static void main(String[] args) {
-			
-			Scanner sc = new Scanner(System.in);
-	
-			int opcao;
-			
-			//criando objeto da classe conta corrente
-			ContaCorrente cc1 = new ContaCorrente(2, 456, 1, "Renata Negrini", 600000, 600000);
-			cc1.visualizar();
-			
-			cc1.sacar(659000);
-			cc1.visualizar();
+	public static void main(String[] args) {
 
-			cc1.depositar(50000);
-			cc1.visualizar();
-			
-			  // Teste da Classe Conta Poupança
-			ContaPoupanca cp1 = new ContaPoupanca(2, 123, 2, "Maria Helena", 100000, 15);
-			cp1.visualizar();
-	        cp1.sacar(1000);
-			cp1.visualizar();
-			cp1.depositar(5000);
-			cp1.visualizar();
-			
-			while (true) {
+		Scanner sc = new Scanner(System.in);
 
-			    // Cabeçalho: fundo preto + texto azul ciano
-			    System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
-			        + "───────────────────────༺𓆩༒︎𓆪༻───────────────────────");
-			    System.out.println("                                                     ");
-			    System.out.println("                  ✧ BANCO AURORA ✧                  ");
-			    System.out.println("                                                     ");
-			    System.out.println("───────────────────────༺𓆩༒︎𓆪༻───────────────────────");
+		ContaController contas = new ContaController();
 
-			    // Corpo do menu: fundo azul petróleo escuro + texto branco
-			    System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_CYAN_BOLD
-			        + "                                                     ");
-			    System.out.println("            1 - Criar Conta                          ");
-			    System.out.println("            2 - Listar todas as Contas               ");
-			    System.out.println("            3 - Buscar Conta por Número              ");
-			    System.out.println("            4 - Atualizar Dados da Conta             ");
-			    System.out.println("            5 - Apagar Conta                         ");
-			    System.out.println("            6 - Sacar                                ");
-			    System.out.println("            7 - Depositar                            ");
-			    System.out.println("            8 - Transferir valores entre Contas      ");
-			    System.out.println("            9 - Sair                                 ");
-			    System.out.println("                                                     ");
-			    System.out.println("──────────────────────༺𓆩༒︎𓆪༻───────────────────────");
+		int opcao, numero, agencia, tipo, aniversario;
+		String titular;
+		float saldo, limite;
 
-			    // Prompt: fundo preto + texto ciano bold
-			    System.out.print(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_CYAN_BOLD
-			        + "\nEntre com a opção desejada: " + Cores.TEXT_RESET);
+		// DADOS PARA TESTE
+		ContaCorrente cc1 = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000.00f, 100.00f);
+		contas.cadastrar(cc1);
+		ContaPoupanca cp1 = new ContaPoupanca(contas.gerarNumero(), 123, 2, "Maria da Silva", 1000.00f, 12);
+		contas.cadastrar(cp1);
 
-			    opcao = sc.nextInt();
+		while (true) {
 
-	
-				if (opcao == 9) {
-					System.out.println(Cores.TEXT_CYAN_BOLD + Cores.ANSI_BLACK_BACKGROUND + "\n✧ Banco Aurora ✧ \nOnde suas finanças brilham como a aurora boreal.");
-					sobre();
-					sc.close();
-					System.exit(0);
+			// Cabeçalho: fundo preto + texto azul ciano
+			System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+					+ "───────────────────────༺𓆩༒︎𓆪༻───────────────────────");
+			System.out.println("                                                     ");
+			System.out.println("                  ✧ BANCO AURORA ✧                  ");
+			System.out.println("                                                     ");
+			System.out.println("───────────────────────༺𓆩༒︎𓆪༻───────────────────────");
+
+			// Corpo do menu: fundo azul petróleo escuro + texto branco
+			System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+					+ "                                                     ");
+			System.out.println("            1 - Criar Conta                          ");
+			System.out.println("            2 - Listar todas as Contas               ");
+			System.out.println("            3 - Buscar Conta por Número              ");
+			System.out.println("            4 - Atualizar Dados da Conta             ");
+			System.out.println("            5 - Apagar Conta                         ");
+			System.out.println("            6 - Sacar                                ");
+			System.out.println("            7 - Depositar                            ");
+			System.out.println("            8 - Transferir valores entre Contas      ");
+			System.out.println("            9 - Sair                                 ");
+			System.out.println("                                                     ");
+			System.out.println("──────────────────────༺𓆩༒︎𓆪༻────────────────────────");
+
+			// Prompt: fundo preto + texto ciano bold
+			System.out.print(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "\nEntre com a opção desejada: "
+					+ Cores.TEXT_RESET);
+
+			opcao = sc.nextInt();
+
+			if (opcao == 9) {
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "\n✧ Banco Aurora ✧ \nOnde suas finanças brilham como a aurora boreal.");
+				sobre();
+				sc.close();
+				System.exit(0);
+			}
+
+			switch (opcao) {
+			case 1:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Criar Conta\n\n");
+
+				System.out.println("Digite o número da Agência: ");
+				agencia = sc.nextInt();
+
+				System.out.println("Digite o nome do Titular: ");
+				sc.skip("\\R");
+				titular = sc.nextLine();
+
+				System.out.println("Digite o tipo da conta (1 - CC | 2 - CP:");
+				tipo = sc.nextInt();
+
+				System.out.println("Digite o Saldo inicial da conta: ");
+				saldo = sc.nextFloat();
+
+				switch (tipo) {
+				case 1 -> {
+					System.out.println("Digite o limite da conta: ");
+					limite = sc.nextFloat();
+					contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
 				}
-	
-				switch (opcao) {
-				case 1:
-					System.out.println("Criar Conta\n\n");
-	
-					break;
-				case 2:
-					System.out.println("Listar todas as Contas\n\n");
-	
-					break;
-				case 3:
-					System.out.println("Consultar dados da Conta - por número\n\n");
-	
-					break;
-				case 4:
-					System.out.println("Atualizar dados da Conta\n\n");
-	
-					break;
-				case 5:
-					System.out.println("Apagar a Conta\n\n");
-	
-					break;
-				case 6:
-					System.out.println("Saque\n\n");
-	
-					break;
-				case 7:
-					System.out.println("Depósito\n\n");
-	
-					break;
-				case 8:
-					System.out.println("Transferência entre Contas\n\n");
-	
-					break;
-				default:
-					System.out.println("\nOpção Inválida!\n");
-					break;
+
+				case 2 -> {
+					System.out.println("Digite o aniversário da conta: ");
+					aniversario = sc.nextInt();
+					contas.cadastrar(
+							new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
 				}
+
+				}
+				keyPress();
+				break;
+
+			case 2:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Listar todas as Contas\n\n");
+				contas.listarTodas();
+				keyPress();
+				break;
+
+			case 3:
+				System.out.println(
+						Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Consultar dados da Conta - por número\n\n");
+
+				System.out.println("Digite o numero da conta: ");
+				numero = sc.nextInt();
+
+				contas.procurarPorNumero(numero);
+				keyPress();
+				break;
+
+			case 4:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Atualizar dados da Conta\n\n");
+				keyPress();
+				break;
+
+			case 5:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Apagar a Conta\n\n");
+				keyPress();
+				break;
+
+			case 6:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Saque\n\n");
+				keyPress();
+				break;
+
+			case 7:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Depósito\n\n");
+				keyPress();
+				break;
+
+			case 8:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Transferência entre Contas\n\n");
+				keyPress();
+				break;
+
+			default:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "\nOpção Inválida!\n");
+				break;
+
 			}
 		}
-	
-		public static void sobre() {
-			System.out.println("\n───────────────────────༺𓆩༒︎𓆪༻────────────────────────");
-			System.out.println("Projeto Desenvolvido por: Maria Helena Squarcini      ");
-			System.out.println("Maria Helena - maria.helen@live.com                   ");
-			System.out.println("github.com/squarcinihelena                            ");
-			System.out.println("───────────────────────༺𓆩༒︎𓆪༻────────────────────────");
+	}
+
+	public static void sobre() {
+		System.out.println("\n───────────────────────༺𓆩༒︎𓆪༻────────────────────────");
+		System.out.println("Projeto Desenvolvido por: Maria Helena Squarcini      ");
+		System.out.println("Maria Helena - maria.helen@live.com                   ");
+		System.out.println("github.com/squarcinihelena                            ");
+		System.out.println("───────────────────────༺𓆩༒︎𓆪༻────────────────────────");
+	}
+
+	public static void keyPress() {
+		try {
+			System.out
+					.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "\n\nPressione Enter para Continuar...");
+
+			// Lê apenas a tecla Enter e ignora outras teclas
+			int input;
+			while ((input = System.in.read()) != '\n') {
+				// Ignora qualquer outra tecla diferente do Enter
+				if (input == -1) {
+					throw new IOException("Entrada encerrada inesperadamente");
+				}
+			}
+
+		} catch (IOException e) {
+			System.err.println("Erro de entrada/saída: " + e.getMessage());
+		} catch (Exception e) {
+			System.err.println("Ocorreu um erro ao processar a entrada: " + e.getMessage());
 		}
 	}
+
+}

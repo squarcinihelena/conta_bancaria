@@ -72,16 +72,9 @@ public class Cores {
 	public static final String ANSI_PURPLE_BACKGROUND_BRIGHT = "\033[0;105m";
 	public static final String ANSI_CYAN_BACKGROUND_BRIGHT = "\033[0;106m";
 	public static final String ANSI_WHITE_BACKGROUND_BRIGHT = "\033[0;107m";
-	
-	
+
 	// custom
-	public static final String TEXT_AURORA = "\033[38;5;51m";  // Azul esverdeado
+	public static final String TEXT_AURORA = "\033[38;5;51m"; // Azul esverdeado
 	public static final String ANSI_BLUE_PETROLEUM_BACKGROUND = "\u001B[48;5;24m";
 
-
-	
-
-
-	
-	
 }
