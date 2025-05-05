@@ -1,31 +1,32 @@
 package conta_bancaria;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import conta_bancaria.controller.ContaController;
+import conta_bancaria.model.Conta;
 import conta_bancaria.model.ContaCorrente;
 import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
 
 public class Menu {
-
 	public static void main(String[] args) {
-
+		
 		Scanner sc = new Scanner(System.in);
-
+		
 		ContaController contas = new ContaController();
-
+	
 		int opcao, numero, agencia, tipo, aniversario;
 		String titular;
 		float saldo, limite;
-
-		// DADOS PARA TESTE
+		
+		// Dados para teste
 		ContaCorrente cc1 = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000.00f, 100.00f);
 		contas.cadastrar(cc1);
 		ContaPoupanca cp1 = new ContaPoupanca(contas.gerarNumero(), 123, 2, "Maria da Silva", 1000.00f, 12);
 		contas.cadastrar(cp1);
-
+		
 		while (true) {
 
 			// Cabeçalho: fundo preto + texto azul ciano
@@ -67,88 +68,138 @@ public class Menu {
 
 			switch (opcao) {
 			case 1:
-				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Criar Conta\n\n");
-
-				System.out.println("Digite o número da Agência: ");
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "Criar Conta\n\n");
+				
+				System.out.println("Digite o número da Agência");
 				agencia = sc.nextInt();
-
-				System.out.println("Digite o nome do Titular: ");
+				
+				System.out.println("Digite o nome do Titular");
 				sc.skip("\\R");
 				titular = sc.nextLine();
-
-				System.out.println("Digite o tipo da conta (1 - CC | 2 - CP:");
+				
+				System.out.println("Digite o tipo da conta (1 - CC | 2 - CP):");
 				tipo = sc.nextInt();
-
-				System.out.println("Digite o Saldo inicial da conta: ");
+				
+				System.out.println("Digite o Saldo inicial da conta:");
 				saldo = sc.nextFloat();
-
-				switch (tipo) {
-				case 1 -> {
-					System.out.println("Digite o limite da conta: ");
-					limite = sc.nextFloat();
-					contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
-				}
-
-				case 2 -> {
-					System.out.println("Digite o aniversário da conta: ");
-					aniversario = sc.nextInt();
-					contas.cadastrar(
-							new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
-				}
-
-				}
-				keyPress();
-				break;
-
-			case 2:
-				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Listar todas as Contas\n\n");
-				contas.listarTodas();
-				keyPress();
-				break;
-
-			case 3:
-				System.out.println(
-						Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Consultar dados da Conta - por número\n\n");
-
-				System.out.println("Digite o numero da conta: ");
-				numero = sc.nextInt();
-
-				contas.procurarPorNumero(numero);
-				keyPress();
-				break;
-
-			case 4:
-				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Atualizar dados da Conta\n\n");
-				keyPress();
-				break;
-
-			case 5:
-				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Apagar a Conta\n\n");
-				keyPress();
-				break;
-
-			case 6:
-				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Saque\n\n");
-				keyPress();
-				break;
-
-			case 7:
-				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Depósito\n\n");
-				keyPress();
-				break;
-
-			case 8:
-				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "Transferência entre Contas\n\n");
-				keyPress();
-				break;
-
-			default:
-				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "\nOpção Inválida!\n");
-				break;
-
+				
+				switch(tipo) {
+				case 1 ->{
+							System.out.println("Digite o limite da conta:");
+							limite = sc.nextFloat();
+							contas.cadastrar(new ContaCorrente (contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+					}
+				case 2 ->{
+							System.out.println("Digite o dia do aniversário da conta:");
+							aniversario = sc.nextInt();
+							contas.cadastrar(new ContaPoupanca (contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+					 }
 			}
+				
+				keyPress();
+                break;
+			case 2:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "Listar todas as Contas\n\n");
+				contas.listarTodas();		
+				keyPress();
+                break;
+			case 3:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "Consultar dados da Conta - por número\n\n");
+				
+				System.out.println("Digite o número da conta: ");
+				numero = sc.nextInt();
+				
+				contas.procurarPorNumero(numero);
+
+				keyPress();
+                break;
+			case 4:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "Atualizar dados da Conta\n\n");
+				
+				//Informar o numero da conta
+				System.out.println("Digite o número da conta: ");
+				numero = sc.nextInt();
+				
+				//Checar se a conta existe
+				Optional<Conta> conta = contas.buscarNaCollection(numero);
+				
+				//Existe?
+				if(conta.isPresent()) {
+					
+					//Atualizar o dados
+					System.out.println("Digite o número da Agência");
+					agencia = sc.nextInt();
+					
+					System.out.println("Digite o nome do Titular");
+					sc.skip("\\R");
+					titular = sc.nextLine();
+					
+					//Recupera o tipo da conta
+					tipo = conta.get().getTipo();
+					
+					System.out.println("Digite o novo Saldo da conta:");
+					saldo = sc.nextFloat();
+					
+					//Identificar o tipo
+					switch(tipo) {
+					case 1 ->{ //Se for Conta Corrente
+								System.out.println("Digite o limite da conta:");
+								limite = sc.nextFloat();
+								contas.atualizar(new ContaCorrente(numero, agencia, tipo, titular, saldo, limite));
+						}
+					case 2 ->{ //Se for Conta Poupança
+								System.out.println("Digite o dia do aniversário da conta:");
+								aniversario = sc.nextInt();
+								contas.atualizar(new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario));
+						 }
+					}
+				}else //Caso não exista a conta
+					System.out.printf("\n A conta número %d não existe", numero);
+				
+				keyPress();
+                break;
+			case 5:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "Apagar a Conta\n\n");
+					
+				System.out.println("Digite o número da conta: ");
+				numero = sc.nextInt();
+				
+				contas.deletar(numero);
+				
+				keyPress();
+               	 break;
+			case 6:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+"Saque\n\n");
+				
+				keyPress();
+               	break;
+			case 7:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "Depósito\n\n");
+						
+						keyPress();
+                		break;
+			case 8:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "Transferência entre Contas\n\n");
+						
+						keyPress();
+                		break;
+			default:
+				System.out.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA
+						+ "\nOpção Inválida!\n" + Cores.TEXT_RESET);
+                		
+						keyPress();
+						break;
 		}
-	}
+	}	
+}
 
 	public static void sobre() {
 		System.out.println("\n───────────────────────༺𓆩༒︎𓆪༻────────────────────────");
@@ -158,25 +209,26 @@ public class Menu {
 		System.out.println("───────────────────────༺𓆩༒︎𓆪༻────────────────────────");
 	}
 
-	public static void keyPress() {
+    public static void keyPress() {
+   	 
 		try {
-			System.out
-					.println(Cores.ANSI_BLACK_BACKGROUND + Cores.TEXT_AURORA + "\n\nPressione Enter para Continuar...");
-
-			// Lê apenas a tecla Enter e ignora outras teclas
+			System.out.println(Cores.TEXT_RESET + "\n\nPressione Enter para Continuar...");
+			
+			//Lê apenas a tecla Enter e ignora outras teclas
 			int input;
-			while ((input = System.in.read()) != '\n') {
-				// Ignora qualquer outra tecla diferente do Enter
+			while((input = System.in.read()) != '\n') {
+				//Ignora qualquer outra tecla diferente do Enter
 				if (input == -1) {
-					throw new IOException("Entrada encerrada inesperadamente");
+					throw new IOException("Entrada encerrada inesperada");
+					
 				}
 			}
-
+ 
 		} catch (IOException e) {
-			System.err.println("Erro de entrada/saída: " + e.getMessage());
-		} catch (Exception e) {
-			System.err.println("Ocorreu um erro ao processar a entrada: " + e.getMessage());
-		}
+	        System.err.println("Erro de entrada/saída: " + e.getMessage());
+	    } catch (Exception e) {
+	        System.err.println("Ocorreu um erro ao processar a entrada: " + e.getMessage());
+	    }
 	}
 
 }

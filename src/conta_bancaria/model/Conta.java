@@ -18,6 +18,7 @@ public abstract class Conta {
 			this.tipo = tipo;
 			this.titular = titular;
 			this.saldo = saldo;
+			
 		}
 		
 		public Conta() {};
