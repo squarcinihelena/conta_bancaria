@@ -1,4 +1,4 @@
-# 💳 Projeto Conta Bancária - Java
+# ˚₊ ˚ ‧₊ .:･˚₊  Projeto Conta Bancária AURORA ˚ ‧₊ .:･˚₊ *˚
 
 ![image](https://github.com/user-attachments/assets/0a1280cc-9b13-4533-b3e0-921576b0abc3)
 
