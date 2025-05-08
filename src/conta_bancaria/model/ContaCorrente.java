@@ -11,7 +11,6 @@ public class ContaCorrente extends Conta {
 		this.limite = limite;
 	}
 
-	// getters and setters
 	public float getLimite() {
 		return limite;
 	}
@@ -19,12 +18,10 @@ public class ContaCorrente extends Conta {
 	public void setLimite(float limite) {
 		this.limite = limite;
 	}
-
+	
 	@Override
-	public boolean sacar(
-			float valor) {
-
-		if (this.getSaldo() + this.limite < valor) {
+	public boolean sacar(float valor) {
+		if ((this.getSaldo() + this.limite) < valor) {
 			System.out.println("\nSaldo é insuficiente");
 			return false;
 		}
@@ -32,11 +29,12 @@ public class ContaCorrente extends Conta {
 		this.setSaldo(this.getSaldo() - valor);
 		return true;
 	}
-
+	
 	@Override
 	public void visualizar() {
 		NumberFormat nfMoeda = NumberFormat.getCurrencyInstance();
 		super.visualizar();
 		System.out.println("Limite da conta: " + nfMoeda.format(this.limite));
 	}
+	
 }
