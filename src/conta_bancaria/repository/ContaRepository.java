@@ -4,7 +4,7 @@ import conta_bancaria.model.Conta;
 
 public interface ContaRepository {
 
-	// metodos do CRUD
+	// Métodos do CRUD (Create, Read, Update e Delete)
 	public void procurarPorNumero(int numero);
 
 	public void listarTodas();
@@ -15,11 +15,12 @@ public interface ContaRepository {
 
 	public void deletar(int numero);
 
-	// metodos bancarios
+	public void listarPorTitular(String titular);
+
+	// Métodos Bancários
 	public void sacar(int numero, float valor);
 
 	public void depositar(int numero, float valor);
 
 	public void transferir(int numeroOrigem, int numeroDestino, float valor);
-
 }
